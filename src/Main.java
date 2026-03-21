@@ -14,17 +14,15 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        Map<Integer, Integer> cash = new HashMap<>();
-        cash.put(5000, 2);
-        cash.put(1000, 2);
-        cash.put(500, 2);
-        cash.put(100, 2);
-        cash.put(50, 0);
+        Map<Denomination, Integer> notes = Enum.EURO.getNotes();
 
-        ATM atm = new ATM(cash, Enum.EURO);
-        atm.withdraw(2300);
+        Map <Integer, Integer> cash = new HashMap<>();
+        for (Map.Entry<Denomination, Integer> entry: notes.entrySet()) {
+            cash.put(entry.getKey().getKeyEnum(), entry.getValue());
+        }
 
-        System.out.println("валюта: " + atm.getCurrency());
+        ATM atm = new ATM(cash);
+        atm.withdraw(70, Enum.DOLLAR);
     }
 }
 

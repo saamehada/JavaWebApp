@@ -1,60 +1,52 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ATM {
-
-
     private final Map<Integer, Integer> cashForTask;
-    private final Enum money;
 
-    public ATM(Map<Integer, Integer> cash, Enum money) {
+    public ATM (Map<Integer, Integer> cash) {
         cashForTask = new HashMap<>(cash);
-        this.money = money;
     }
 
-    public Map<Integer, Integer> withdraw(int amount) {
+    public Map<Denomination, Integer> withdraw(int amount, Enum currency) {
+        Map<Denomination, Integer> availableNotes = currency.getNotes();
+        Map<Denomination, Integer> result = new HashMap<>();
 
         if (amount <= 0) {
-            throw new InvalidAmount("Сумма должна быть положительной. Измените сумму");
+            throw new InvalidAmount("Неверная сумма. Ваша сумма отрицательна или равна нулю");
         }
 
-        int sumOfKeys = cashForTask.keySet().stream().mapToInt(Integer::intValue).sum();
-        if (amount > sumOfKeys) {
-            throw new InvalidAmount("Не хватает купюр для выдачи");
+        if (currency == null) {
+            throw new mistakeCurrency("Валюта не выбрана или выбрана неверно");
         }
 
-        if (amount % 50 != 0) {
-            throw new InvalidAmount("Введите корректную сумму");
-        }
 
-        Map<Integer, Integer> result = new HashMap<>();
-        List<Integer> availableNominals = cashForTask.keySet().stream().sorted().toList().reversed();
+        List<Denomination> denominations = Arrays.asList(Denomination.values());
+        denominations.sort((a, b) -> b.getKeyEnum() - a.getKeyEnum());
 
-        for (Integer nominal : availableNominals) {
-            int availableCount = cashForTask.get(nominal);
-            int k = Math.min(availableCount, amount / nominal);
-            amount -= nominal * k;
+
+        for (Denomination nominal : denominations) {
+            int availableCount = availableNotes.getOrDefault(nominal, 0);
+            int k = Math.min(availableCount, amount / nominal.getKeyEnum());
+            amount -= nominal.getKeyEnum() * k;
 
             if (k > 0) {
                 result.put(nominal, k);
-                cashForTask.put(nominal, availableCount - k);
-                System.out.println(k + " шт по " + nominal);
+                cashForTask.put(nominal.getKeyEnum(), cashForTask.getOrDefault(nominal.getKeyEnum(), 0) - k);
+                System.out.println(k + " шт по " + nominal + " валюта: " + currency);
             }
         }
 
         if (amount != 0) {
-            for (Map.Entry<Integer, Integer> resultEntry : result.entrySet()) {
-                Integer availableCount = cashForTask.get(resultEntry.getKey());
-                cashForTask.put(resultEntry.getKey(), availableCount + resultEntry.getValue());
+            for (Map.Entry<Denomination, Integer> resultEntry : result.entrySet()) {
+                Integer availableCount = cashForTask.get(resultEntry.getKey().getKeyEnum());
+                cashForTask.put(resultEntry.getKey().getKeyEnum(), availableCount + resultEntry.getValue());
             }
-            throw new InvalidAmount();
+            throw new ExceptionATM("Неверное списание");
         }
 
         return result;
-    }
-
-    public Enum getCurrency() {
-        return money;
     }
 }
