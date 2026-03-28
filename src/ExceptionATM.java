@@ -11,7 +11,7 @@ class InvalidAmount extends ExceptionATM {
 }
 
 class mistakeCurrency extends ExceptionATM {
-    public mistakeCurrency (String message) {
+    public mistakeCurrency(String message) {
         super(message);
     }
 }

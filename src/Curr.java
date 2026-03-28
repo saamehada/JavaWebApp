@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public enum Enum {
+public enum Curr {
     EURO,
     DOLLAR,
     RUBLE;
@@ -12,12 +12,12 @@ public enum Enum {
         switch (this) {
             case EURO:
                 notes.put(Denomination.FIFTY, 3);
-                notes.put(Denomination.TWENTY, 2);
-                notes.put(Denomination.TEN, 1);
+                notes.put(Denomination.TWENTY, 1);
+                notes.put(Denomination.TEN, 2);
                 break;
             case DOLLAR:
                 notes.put(Denomination.FIFTY, 5);
-                notes.put(Denomination.TWENTY, 0);
+                notes.put(Denomination.TWENTY, 1);
                 notes.put(Denomination.TEN, 3);
                 break;
             case RUBLE:
