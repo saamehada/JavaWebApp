@@ -24,8 +24,8 @@ public class Main {
             amount += entry.getKey().getKeyEnum() * entry.getValue();
         }
 
-        ATM atm = new ATM(Curr.RUBLE);
-        atm.withdraw(amount, Curr.RUBLE);
+        ATM atm = new ATM();
+        atm.withdraw(amount, "RUBLE");
     }
 }
 
