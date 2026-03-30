@@ -24,8 +24,37 @@ public class Main {
             amount += entry.getKey().getKeyEnum() * entry.getValue();
         }
 
-        ATM atm = new ATM();
-        atm.withdraw(amount, "RUBLE");
+
+        Map<CurrencyType, Map<Denomination, Integer>> currencies = new HashMap<>();
+
+        Map<Denomination, Integer> dollar = new HashMap<>();
+        dollar.put(Denomination.ONE_THOUSAND, 10);
+        dollar.put(Denomination.FIVE_HUNDRED, 20);
+        dollar.put(Denomination.ONE_HUNDRED, 100);
+        dollar.put(Denomination.FIFTY, 100);
+        dollar.put(Denomination.TWENTY, 100);
+        dollar.put(Denomination.TEN, 100);
+        currencies.put(CurrencyType.DOLLAR, dollar);
+
+        Map<Denomination, Integer> euro = new HashMap<>();
+        euro.put(Denomination.ONE_THOUSAND, 15);
+        euro.put(Denomination.FIVE_HUNDRED, 25);
+        euro.put(Denomination.ONE_HUNDRED, 105);
+        euro.put(Denomination.FIFTY, 300);
+        euro.put(Denomination.TWENTY, 100);
+        euro.put(Denomination.TEN, 200);
+        currencies.put(CurrencyType.EURO, euro);
+
+        Map<Denomination, Integer> ruble = new HashMap<>();
+        ruble.put(Denomination.FIVE_THOUSAND, 300);
+        ruble.put(Denomination.ONE_THOUSAND, 200);
+        ruble.put(Denomination.FIVE_HUNDRED, 100);
+        ruble.put(Denomination.ONE_HUNDRED, 3000);
+        ruble.put(Denomination.FIFTY, 20000);
+        currencies.put(CurrencyType.RUBLE, ruble);
+
+        ATM atm = new ATM(currencies);
+        atm.withdraw(amount, CurrencyType.RUBLE);
     }
 }
 

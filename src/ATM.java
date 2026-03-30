@@ -4,40 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ATM {
-    private final Map<String, Map<Denomination, Integer>> currencies = new HashMap<>();
+    private final Map<CurrencyType, Map<Denomination, Integer>> currencies;
 
-
-    public ATM() {
-        Map<Denomination, Integer> dollar = new HashMap<>();
-        dollar.put(Denomination.ONE_THOUSAND, 10);
-        dollar.put(Denomination.FIVE_HUNDRED, 20);
-        dollar.put(Denomination.ONE_HUNDRED, 100);
-        dollar.put(Denomination.FIFTY, 100);
-        dollar.put(Denomination.TWENTY, 100);
-        dollar.put(Denomination.TEN, 100);
-        currencies.put("DOLLAR", dollar);
-
-
-        Map<Denomination, Integer> euro = new HashMap<>();
-        dollar.put(Denomination.ONE_THOUSAND, 15);
-        dollar.put(Denomination.FIVE_HUNDRED, 25);
-        dollar.put(Denomination.ONE_HUNDRED, 105);
-        euro.put(Denomination.FIFTY, 300);
-        euro.put(Denomination.TWENTY, 100);
-        euro.put(Denomination.TEN, 200);
-        currencies.put("EURO", euro);
-
-
-        Map<Denomination, Integer> ruble = new HashMap<>();
-        ruble.put(Denomination.FIVE_THOUSAND, 300);
-        ruble.put(Denomination.ONE_THOUSAND, 200);
-        ruble.put(Denomination.FIVE_HUNDRED, 100);
-        ruble.put(Denomination.ONE_HUNDRED, 3000);
-        ruble.put(Denomination.FIFTY, 20000);
-        currencies.put("RUBLE", ruble);
+    public ATM(Map<CurrencyType, Map<Denomination, Integer>> currencies) {
+        this.currencies = currencies;
     }
 
-    public void withdraw(int amount, String currency) {
+    public void withdraw(int amount, CurrencyType currency) {
         System.out.println("Изначальное кол-во купюр в банкомате: ");
         System.out.println(currencies);
         System.out.println();
@@ -46,7 +19,7 @@ public class ATM {
             throw new InvalidAmount("Неверная сумма. Ваша сумма отрицательна или равна нулю");
         }
 
-        if (currency == null || currency.isEmpty()) {
+        if (currency == null) {
             throw new mistakeCurrency("Валюта не выбрана или выбрана неверно");
         }
 
